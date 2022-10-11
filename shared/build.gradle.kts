@@ -1,7 +1,7 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.6.21"
+    kotlin("plugin.serialization")
 }
 
 val ktorVersion = "2.0.2"
@@ -37,6 +37,7 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
             }
         }
         val androidTest by getting
