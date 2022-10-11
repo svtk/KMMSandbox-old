@@ -1,7 +1,8 @@
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    kotlin("plugin.serialization") version "1.6.21"
+    kotlin("plugin.serialization")
+    id("com.rickclephas.kmp.nativecoroutines")
 }
 
 val ktorVersion = "2.0.2"

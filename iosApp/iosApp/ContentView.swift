@@ -1,5 +1,6 @@
 import SwiftUI
 import shared
+import KMPNativeCoroutinesAsync
 
 struct ContentView: View {
     @ObservedObject private(set) var viewModel: ViewModel
@@ -12,16 +13,18 @@ struct ContentView: View {
 }
 
 extension ContentView {
+    @MainActor
     class ViewModel: ObservableObject {
-        @Published var phrases = ["Loading..."]
+        @Published var phrases = [String]()
         init() {
-            Greeting().greeting { greeting, error in
-                DispatchQueue.main.async {
-                    if let greeting = greeting {
-                        self.phrases = greeting
-                    } else {
-                        self.phrases = [error?.localizedDescription ?? "error"]
+            Task {
+                do {
+                    let stream = asyncStream(for: Greeting().greetingNative())
+                    for try await data in stream {
+                        self.phrases = data
                     }
+                } catch {
+                    print("Failed with error: \(error)")
                 }
             }
         }
